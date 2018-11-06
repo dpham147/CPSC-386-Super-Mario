@@ -3,7 +3,7 @@ import pygame
 
 class Background:
     def __init__(self):
-        self.image = pygame.image.load('images/')
+        self.image = pygame.image.load('images/background.png')
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()
         self.mario_rect = self.mario.get_rect()
@@ -13,5 +13,5 @@ class Background:
 
     def update(self):
         if self.mario_moving_right and self.mario_rect.centerx > self.rect.centerx:
-            #scroll background
+            # scroll background
 
