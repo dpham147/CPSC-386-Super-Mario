@@ -3,7 +3,7 @@ import pygame
 
 class Background:
     def __init__(self):
-        self.image = pygame.image.load('images/1-1.png')
+        self.image = pygame.image.load('images/')
         self.rect = self.image.get_rect()
         self.screen_rect = self.screen.get_rect()
         self.mario_rect = self.mario.get_rect()
