@@ -89,9 +89,9 @@ class Vector:
 
     def sign(self, other): return 1 if self.norm(other) > 0 else -1
 
-    def draw(self, game, origin, color=Color.GREEN, scale=5000, thickness=5):
+    def draw(self, screen, origin, color=Color.GREEN, scale=5000, thickness=5):
         dest = origin + scale * self
-        pygame.draw.line(game.screen, color, origin.xy(), dest.xy(), thickness)
+        pygame.draw.line(screen, color, origin.xy(), dest.xy(), thickness)
 
         offset = self.magnitude() / 10.0
         delta = offset * ihat + jhat
@@ -107,7 +107,7 @@ class Vector:
         pts.append(dest.xy())
         pts.append(lower.xy())
         pts.append(upper.xy())
-        pygame.draw.polygon(game.screen, color, pts, thickness)
+        pygame.draw.polygon(screen, color, pts, thickness)
 
     def draw_xcomponent(self, game, origin, color=Color.GREEN, scale=5000, thickness=5):
         Vector(self.x, 0, 0).draw(game, origin, color, scale, thickness)
@@ -126,4 +126,6 @@ class Vector:
 ihat = Vector(1, 0, 0)
 jhat = Vector(0, 1, 0)
 khat = Vector(0, 0, 1)
+g = Vector(0, 2, 0)
+friction = Vector(2, 0, 0)
 zero_vec = Vector(0, 0, 0)

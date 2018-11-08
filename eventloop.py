@@ -7,6 +7,8 @@ class EventLoop:
         self.finished = finished
 
     def check_events(self, mario):
+        mario.update()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -19,9 +21,15 @@ class EventLoop:
                 elif event.key == pygame.K_d:
                     mario.mv_right = True
                 elif event.key == pygame.K_s:
-                    print("Crouch")
-                    # Mario crouch
+                    mario.is_crouch = True
                 elif event.key == pygame.K_a:
-                    mario.mv_right = True
+                    mario.mv_left = True
                 elif event.key == pygame.K_q:
                     sys.exit()
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_d:
+                    mario.mv_right = False
+                elif event.key == pygame.K_s:
+                    mario.is_crouch = False
+                elif event.key == pygame.K_a:
+                    mario.mv_left = False
