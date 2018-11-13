@@ -6,8 +6,9 @@ class EventLoop:
     def __init__(self, finished):
         self.finished = finished
 
-    def check_events(self, mario, background):
+    def check_events(self, mario, background, stats):
         mario.update(background)
+        stats.tick()
 
         for event in pygame.event.get():
             # Exit Game
@@ -48,6 +49,7 @@ class EventLoop:
                         mario.normal()
                 elif event.key == pygame.K_k:
                     mario.die()
+                    background.reload()
 
             # Keyup events
             elif event.type == pygame.KEYUP:

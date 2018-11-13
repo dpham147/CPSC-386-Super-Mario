@@ -2,6 +2,8 @@ import pygame
 from eventloop import EventLoop
 from background import Background
 from mario import Mario
+from scoreboard import Scoreboard
+from stats import Stats
 
 
 class Game:
@@ -23,16 +25,25 @@ class Game:
         # Create the level
         self.background = Background(self.screen, self.mario)
 
+        # Create stats object
+        self.stats = Stats()
+        self.stats.reset()
+
+        # Set scoreboard
+        self.scoreboard = Scoreboard(self.screen, self.stats)
+
     def play(self):
         eloop = EventLoop(finished=False)
         while not eloop.finished:
-            eloop.check_events(self.mario, self.background)
+            eloop.check_events(self.mario, self.background, self.stats)
+
             self.update_screen()
 
     def update_screen(self):
         self.screen.fill((0, 0, 0))
         self.background.blitme()
         self.mario.blitme()
+        self.scoreboard.update()
         pygame.display.flip()
 
 

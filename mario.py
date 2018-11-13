@@ -51,28 +51,10 @@ class Mario(Sprite):
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
 
-        self.mv_left = False
-        self.mv_right = False
-
-        self.rect.left = self.screen_rect.left
-        self.rect.bottom = self.screen_rect.centery
-
-        self.centerx = float(self.rect.centerx)
-        self.centery = float(self.rect.centery)
-
-        self.vector = Vector(0, 0)
-
         self.fireballs = Group()
         self.fireball_delay = 100
 
-        self.is_star = False
-        self.star_timer = 1000
-        self.is_super = False
-        self.is_fire = False
-        self.is_crouch = False
-        self.airborne = False
-        self.face_right = True
-        self.is_dead = False
+        self.restart()
 
     def get_rect(self):
         return self.rect
@@ -179,8 +161,33 @@ class Mario(Sprite):
         else:
             self.rect.centery += self.vector.y
             self.vector.y += Vector.forces().y
-            print(self.vector.y)
-            self.airborne = True
+            self.rect.top = min(self.screen_rect.bottom, self.rect.top)
+            self.death_timer -= 1
+            print(self.death_timer)
+            if self.death_timer == 0:
+                self.restart()
+
+    def restart(self):
+        self.death_timer = 600
+        self.is_star = False
+        self.star_timer = 1000
+        self.is_super = False
+        self.is_fire = False
+        self.is_crouch = False
+        self.airborne = False
+        self.face_right = True
+        self.is_dead = False
+
+        self.mv_left = False
+        self.mv_right = False
+
+        self.vector = Vector(0, 0)
+
+        self.rect.left = self.screen_rect.left
+        self.rect.bottom = self.screen_rect.centery
+
+        self.centerx = float(self.rect.centerx)
+        self.centery = float(self.rect.centery)
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
