@@ -8,3 +8,7 @@ class Goomba:
         self.mario = mario
         self.mario_rect = self.mario.get_rect()
         self.image = pygame.image.load('image')
+        self.rect = self.image.get_rect()
+
+    def blitme(self):
+        self.screen.blit(self.image, self.rect)
