@@ -10,14 +10,16 @@ class EventLoop:
         mario.update(background)
 
         for event in pygame.event.get():
+            # Exit Game
             if event.type == pygame.QUIT:
                 sys.exit()
+            # Keydown events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     mario.jump()
                 elif event.key == pygame.K_LSHIFT:
                     print("Pew pew")
-                    mario.fire()
+                    mario.shoot()
                 elif event.key == pygame.K_d:
                     mario.mv_right = True
                 elif event.key == pygame.K_s:
@@ -31,11 +33,24 @@ class EventLoop:
                 elif event.key == pygame.K_TAB:
                     if not mario.is_star:
                         mario.star()
+                    else:
+                        mario.normal()
+                elif event.key == pygame.K_COMMA:
+                    if not mario.is_super:
+                        mario.super()
+                    else:
+                        mario.normal()
+                elif event.key == pygame.K_PERIOD:
+                    if not mario.is_fire:
+                        mario.fire()
+                    else:
+                        mario.normal()
+
+            # Keyup events
             elif event.type == pygame.KEYUP:
                 if event.key == pygame.K_d:
                     mario.mv_right = False
                 elif event.key == pygame.K_s:
                     mario.is_crouch = False
-                    print("shhh")
                 elif event.key == pygame.K_a:
                     mario.mv_left = False

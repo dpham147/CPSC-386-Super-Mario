@@ -10,14 +10,38 @@ class Mario(Sprite):
 
         # Set Small Mario Animation Frames
         self.small_image = pygame.image.load('images/mario/small-1.png')
+        self.small_jump = pygame.image.load('images/mario/small-6.png')
 
-        frames = [pygame.image.load('images/mario/small-1.png'),
-                  pygame.image.load('images/mario/small-2.png'),
+        self.big_image = pygame.image.load('images/mario/big-1.png')
+        self.big_jump = pygame.image.load('images/mario/big-6.png')
+        self.big_crouch = pygame.image.load('images/mario/big-7.png')
+
+        self.fire_image = pygame.image.load('images/mario/fire-1.png')
+        self.fire_jump = pygame.image.load('images/mario/fire-6.png')
+        self.fire_crouch = pygame.image.load('images/mario/fire-7.png')
+
+        frames = [pygame.image.load('images/mario/small-2.png'),
                   pygame.image.load('images/mario/small-3.png'),
-                  pygame.image.load('images/mario/small-4.png'),
-                  pygame.image.load('images/mario/small-5.png'),
-                  pygame.image.load('images/mario/small-6.png')]
+                  pygame.image.load('images/mario/small-4.png')]
         self.small_right_timer = Timer(frames)
+
+        frames = [pygame.image.load('images/mario/inv_small_mario_color1-1.png'),
+                  pygame.image.load('images/mario/inv_small_mario_color1-2.png'),
+                  pygame.image.load('images/mario/inv_small_mario_color1-3.png'),
+                  pygame.image.load('images/mario/inv_small_mario_color1-4.png'),
+                  pygame.image.load('images/mario/inv_small_mario_color1-5.png'),
+                  pygame.image.load('images/mario/inv_small_mario_color1-6.png')]
+        self.small_invincible_timer = Timer(frames)
+
+        frames = [pygame.image.load('images/mario/big-2.png'),
+                  pygame.image.load('images/mario/big-3.png'),
+                  pygame.image.load('images/mario/big-4.png')]
+        self.big_right_timer = Timer(frames)
+
+        frames = [pygame.image.load('images/mario/fire-2.png'),
+                  pygame.image.load('images/mario/fire-3.png'),
+                  pygame.image.load('images/mario/fire-4.png')]
+        self.fire_right_timer = Timer(frames)
 
         self.image = self.small_image
         self.rect = self.small_image.get_rect()
@@ -29,7 +53,7 @@ class Mario(Sprite):
         self.mv_right = False
 
         self.rect.left = self.screen_rect.left
-        self.rect.centery = self.screen_rect.centery
+        self.rect.bottom = self.screen_rect.centery
 
         self.centerx = float(self.rect.centerx)
         self.centery = float(self.rect.centery)
@@ -41,46 +65,98 @@ class Mario(Sprite):
         self.is_super = False
         self.is_fire = False
         self.is_crouch = False
+        self.airborne = False
+        self.face_right = True
 
     def get_rect(self):
         return self.rect
 
+    def get_status(self):
+        if self.is_star:
+            print('Invincible')
+        if self.is_fire:
+            print('FIRE')
+        if self.is_super:
+            print('SUPER')
+        if self.is_crouch:
+            print('CROUCHING')
+        if self.airborne:
+            print('AIRBORNE')
+
     def update(self, background):
+        self.get_status()
         # Handle X Movement
-        if self.mv_left:
-            self.vector.x = max(self.vector.x - .1, -1.5)
+        if self.mv_left and not self.is_crouch:
+            # Manip position
+            self.vector.x = max(self.vector.x - .1, -1)
             background.rect.left -= min(0, abs(self.vector.x))
-            self.image = pygame.transform.flip(self.small_right_timer.imagerect(), True, False)
-        elif self.mv_right:
-            self.vector.x = min(self.vector.x + .1, 1.5)
+            self.face_right = False
+
+            # Select Image if grounded
+            if not self.airborne:
+                if self.is_fire:
+                    self.image = pygame.transform.flip(self.fire_right_timer.imagerect(), True, False)
+                elif self.is_super:
+                    self.image = pygame.transform.flip(self.big_right_timer.imagerect(), True, False)
+                else:
+                    self.image = pygame.transform.flip(self.small_right_timer.imagerect(), True, False)
+
+        elif self.mv_right and not self.is_crouch:
+            # Manip position
+            self.vector.x = min(self.vector.x + .1, 1)
             background.rect.right -= min(background.rect.right, abs(self.vector.x))
-            self.image = self.small_right_timer.imagerect()
+            self.face_right = True
+
+            # Select Image if grounded
+            if not self.airborne:
+                if self.is_fire:
+                    self.image = self.fire_right_timer.imagerect()
+                elif self.is_super:
+                    self.image = self.big_right_timer.imagerect()
+                else:
+                    self.image = self.small_right_timer.imagerect()
+
         else:
+            if not self.airborne:
+                if not self.face_right:
+                    if self.is_fire:
+                        if self.is_crouch:
+                            self.image = pygame.transform.flip(self.fire_crouch, True, False)
+                        else:
+                            self.image = pygame.transform.flip(self.fire_image, True, False)
+                    elif self.is_super:
+                        if self.is_crouch:
+                            self.image = pygame.transform.flip(self.big_crouch, True, False)
+                        else:
+                            self.image = pygame.transform.flip(self.big_image, True, False)
+                    else:
+                        self.image = pygame.transform.flip(self.small_image, True, False)
+                elif self.face_right:
+                    if self.is_fire:
+                        if self.is_crouch:
+                            self.image = self.fire_crouch
+                        else:
+                            self.image = self.fire_image
+                    elif self.is_super:
+                        if self.is_crouch:
+                            self.image = self.big_crouch
+                        else:
+                            self.image = self.big_image
+                    else:
+                        self.image = self.small_image
+
             self.vector.x = 0
+
         self.rect.centerx = max(self.rect.centerx + self.vector.x, 0)
 
         # Handle Y Movement
-        self.rect.centery += self.vector.y
+        if self.airborne:
+            self.rect.centery += self.vector.y
+            self.vector.y += .15
+            if self.rect.bottom >= self.screen_rect.centery:
+                self.rect.bottom = self.screen_rect.centery
+                self.airborne = False
         # print('Mario Pos: (' + str(self.rect.centerx) + ', ' + str(self.rect.centery))
-
-        # Handle sprite changes
-        if self.is_fire:
-            if self.is_crouch:
-                pass
-               # self.rect = self.fire_rect_crouch
-            else:
-                pass
-               # self.rect = self.fire_rect
-        elif self.is_super:
-            if self.is_crouch:
-                pass
-               # self.rect = self.super_rect_crouch
-            else:
-                pass
-               # self.rect = self.super_rect
-        else:
-            pass
-           # self.rect = self.small_rect
 
         # Handle invincibility timer
         if self.is_star:
@@ -94,9 +170,30 @@ class Mario(Sprite):
         self.screen.blit(self.image, self.rect)
 
     def jump(self):
-        pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/small_jump.ogg'))
+        if not self.airborne:
+            self.airborne = True
+            #pygame.mixer.Channel(1).play(pygame.mixer.Sound('sound/small_jump.ogg'))
 
-    def fire(self):
+            if self.is_fire:
+                self.vector.y = -4.5
+                if not self.face_right:
+                    self.image = pygame.transform.flip(self.fire_jump, True, False)
+                elif self.face_right:
+                    self.image = self.fire_jump
+            elif self.is_super:
+                self.vector.y = -4.5
+                if not self.face_right:
+                    self.image = pygame.transform.flip(self.big_jump, True, False)
+                elif self.face_right:
+                    self.image = self.big_jump
+            else:
+                self.vector.y = -3
+                if not self.face_right:
+                    self.image = pygame.transform.flip(self.small_jump, True, False)
+                elif self.face_right:
+                    self.image = self.small_jump
+
+    def shoot(self):
         if self.is_fire:
             pygame.mixer.Channel(2).play(pygame.mixer.Sound('sound/fireball.ogg'))
 
@@ -106,4 +203,51 @@ class Mario(Sprite):
         pygame.mixer.Channel(0).pause()
         pygame.mixer.Channel(7).play(pygame.mixer.Sound('music/invincible.ogg'))
 
+    def super(self):
+        self.is_fire = False
+        self.is_super = True
+        bottom = self.rect.bottom
+        centerx = self.rect.centerx
+        if not self.face_right:
+            self.image = pygame.transform.flip(self.big_image, True, False)
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+        elif self.face_right:
+            self.image = self.big_image
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+
+    def fire(self):
+        self.is_fire = True
+        self.is_super = False
+        bottom = self.rect.bottom
+        centerx = self.rect.centerx
+        if not self.face_right:
+            self.image = pygame.transform.flip(self.fire_image, True, False)
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+        elif self.face_right:
+            self.image = self.fire_image
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+
+    def normal(self):
+        self.is_fire = False
+        self.is_super = False
+        bottom = self.rect.bottom
+        centerx = self.rect.centerx
+        if not self.face_right:
+            self.image = pygame.transform.flip(self.small_image, True, False)
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+        elif self.face_right:
+            self.image = self.small_image
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
 
