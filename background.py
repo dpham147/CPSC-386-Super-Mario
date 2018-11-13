@@ -1,5 +1,5 @@
 import pygame
-# import MarioClass from mario
+
 
 class Background:
     def __init__(self, screen, mario):
