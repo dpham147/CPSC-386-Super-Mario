@@ -13,6 +13,7 @@ class Mario(Sprite):
         # Set Small Mario Animation Frames
         self.small_image = pygame.image.load('images/mario/small-1.png')
         self.small_jump = pygame.image.load('images/mario/small-6.png')
+        self.small_invincible = pygame.image.load('images/mario/inv_small_mario_color1-1.png')
 
         self.big_image = pygame.image.load('images/mario/big-1.png')
         self.big_jump = pygame.image.load('images/mario/big-6.png')
@@ -27,12 +28,9 @@ class Mario(Sprite):
                   pygame.image.load('images/mario/small-4.png')]
         self.small_right_timer = Timer(frames)
 
-        frames = [pygame.image.load('images/mario/inv_small_mario_color1-1.png'),
-                  pygame.image.load('images/mario/inv_small_mario_color1-2.png'),
+        frames = [pygame.image.load('images/mario/inv_small_mario_color1-2.png'),
                   pygame.image.load('images/mario/inv_small_mario_color1-3.png'),
-                  pygame.image.load('images/mario/inv_small_mario_color1-4.png'),
-                  pygame.image.load('images/mario/inv_small_mario_color1-5.png'),
-                  pygame.image.load('images/mario/inv_small_mario_color1-6.png')]
+                  pygame.image.load('images/mario/inv_small_mario_color1-4.png')]
         self.small_invincible_timer = Timer(frames)
 
         frames = [pygame.image.load('images/mario/big-2.png'),
@@ -87,7 +85,10 @@ class Mario(Sprite):
                     elif self.is_super:
                         self.image = pygame.transform.flip(self.big_right_timer.imagerect(), True, False)
                     else:
-                        self.image = pygame.transform.flip(self.small_right_timer.imagerect(), True, False)
+                        if self.is_star:
+                            self.image = pygame.transform.flip(self.small_invincible_timer.imagerect(), True, False)
+                        else:
+                            self.image = pygame.transform.flip(self.small_right_timer.imagerect(), True, False)
 
             elif self.mv_right and not self.is_crouch:
                 # Manip position
@@ -102,7 +103,10 @@ class Mario(Sprite):
                     elif self.is_super:
                         self.image = self.big_right_timer.imagerect()
                     else:
-                        self.image = self.small_right_timer.imagerect()
+                        if self.is_star:
+                            self.image = self.small_invincible_timer.imagerect()
+                        else:
+                            self.image = self.small_right_timer.imagerect()
 
             else:
                 if not self.airborne:
@@ -118,7 +122,10 @@ class Mario(Sprite):
                             else:
                                 self.image = pygame.transform.flip(self.big_image, True, False)
                         else:
-                            self.image = pygame.transform.flip(self.small_image, True, False)
+                            if self.is_star:
+                                self.image = pygame.transform.flip(self.small_invincible, True, False)
+                            else:
+                                self.image = pygame.transform.flip(self.small_image, True, False)
                     elif self.face_right:
                         if self.is_fire:
                             if self.is_crouch:
@@ -131,7 +138,10 @@ class Mario(Sprite):
                             else:
                                 self.image = self.big_image
                         else:
-                            self.image = self.small_image
+                            if self.is_star:
+                                self.image = self.small_invincible
+                            else:
+                                self.image = self.small_image
 
                 self.vector.x = 0
 
@@ -141,9 +151,14 @@ class Mario(Sprite):
             if self.airborne:
                 self.rect.centery += self.vector.y
                 self.vector.y += Vector.forces().y
-                if self.rect.bottom >= self.screen_rect.centery:
-                    self.rect.bottom = self.screen_rect.centery
-                    self.airborne = False
+
+            # Handle falling
+            # if falling = True:
+            #    self.airborne = True
+
+            # Prevent floor clipping
+            # if self.rect.bottom >= self.screen_rect.centery and not self.airborne:
+            #    self.rect.bottom = self.screen_rect.centery
 
             # Handle invincibility timer
             if self.is_star:
@@ -227,6 +242,18 @@ class Mario(Sprite):
     def star(self):
         self.star_timer = 1000
         self.is_star = True
+        bottom = self.rect.bottom
+        centerx = self.rect.centerx
+        if not self.face_right:
+            self.image = pygame.transform.flip(self.small_invincible, True, False)
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
+        elif self.face_right:
+            self.image = self.small_invincible
+            self.rect = self.image.get_rect()
+            self.rect.bottom = bottom
+            self.rect.centerx = centerx
         pygame.mixer.Channel(0).pause()
         pygame.mixer.Channel(7).play(pygame.mixer.Sound('music/invincible.ogg'))
 

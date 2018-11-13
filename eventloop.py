@@ -8,12 +8,14 @@ class EventLoop:
 
     def check_events(self, mario, background, stats):
         mario.update(background)
+        background.update()
         stats.tick()
 
         for event in pygame.event.get():
             # Exit Game
             if event.type == pygame.QUIT:
-                sys.exit()
+                self.finished = True
+
             # Keydown events
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
