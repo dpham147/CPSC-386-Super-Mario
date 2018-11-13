@@ -15,7 +15,7 @@ class Game:
         # Init audio
         pygame.mixer.init()
         pygame.mixer.set_num_channels(8)
-        #pygame.mixer.Channel(0).play(pygame.mixer.Sound('music/main_theme.ogg'), -1)
+        pygame.mixer.Channel(0).play(pygame.mixer.Sound('music/main_theme.ogg'), -1)
 
         # Create Mario
         self.mario = Mario(self.screen)
