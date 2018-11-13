@@ -23,7 +23,8 @@ class EventLoop:
                 elif event.key == pygame.K_d:
                     mario.mv_right = True
                 elif event.key == pygame.K_s:
-                    mario.is_crouch = True
+                    if mario.is_super or mario.is_fire:
+                        mario.is_crouch = True
                 elif event.key == pygame.K_a:
                     mario.mv_left = True
                 elif event.key == pygame.K_q:
@@ -45,6 +46,8 @@ class EventLoop:
                         mario.fire()
                     else:
                         mario.normal()
+                elif event.key == pygame.K_k:
+                    mario.die()
 
             # Keyup events
             elif event.type == pygame.KEYUP:

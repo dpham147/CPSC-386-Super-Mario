@@ -123,9 +123,11 @@ class Vector:
         self.draw_ycomponent(game, origin, color, scale, thickness)
         # self.draw_zcomponent(game, origin, color, scale, thickness)
 
+    @staticmethod
+    def forces():
+        return Vector(.1, .15, 0)
+
 ihat = Vector(1, 0, 0)
 jhat = Vector(0, 1, 0)
 khat = Vector(0, 0, 1)
-g = Vector(0, 2, 0)
-friction = Vector(2, 0, 0)
 zero_vec = Vector(0, 0, 0)
