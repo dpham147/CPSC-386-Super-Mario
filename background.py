@@ -10,11 +10,15 @@ class Background:
         self.screen = screen
         self.mario = mario
 
-        self.filename = 'levels/1-1.txt'
+        self.filename = 'levels/newmario1-1.txt'
         with open(self.filename, 'r') as f:
             self.rows = f.readlines()
 
         self.floor = []
+        self.tiles = []
+        self.poles = []
+        self.poletops = []
+        self.flags = []
         self.coins = []
         self.breakables = []
         self.unbreakables = []
@@ -25,11 +29,15 @@ class Background:
         sz = Background.BRICK_SIZE
 
         self.brick = ImageRect(screen, 'floor-150x150', sz, sz)
+        self.tile = ImageRect(screen, 'tile_block', sz, sz)
+        self.pole = ImageRect(screen, 'game_finished/flagpole', sz, sz)
+        self.poletop = ImageRect(screen, 'game_finished/flagpole_top', sz, sz)
+        self.flag = ImageRect(screen, 'game_finished/finish_flag', sz, sz)
         self.coin = ImageRect(screen, 'items/coin-1', sz, sz)
         self.breakable = ImageRect(screen, 'bricks/brick_initial', sz, sz)
         self.unbreakable = ImageRect(screen, 'bricks/brick_initial', sz, sz)
         self.question_brick = ImageRect(screen, 'question_block/question_block_initial-1', sz, sz)
-        self.pipe = ImageRect(screen, 'bricks/brick_initial', sz, sz)
+        self.pipe = ImageRect(screen, 'pipe-1', sz, sz)
         self.goomba = ImageRect(screen, 'minions/goomba-1', sz, sz)
 
         self.deltax = self.deltay = sz
@@ -43,6 +51,18 @@ class Background:
         self.rect.left -= self.mario.vector.x
 
         for rect in self.floor:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.tiles:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.poles:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.poletops:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.flags:
             rect.left -= self.mario.vector.x
 
         for rect in self.coins:
@@ -73,6 +93,18 @@ class Background:
 
         for rect in self.floor:
             self.screen.blit(self.brick.image, rect)
+
+        for rect in self.tiles:
+            self.screen.blit(self.tile.image, rect)
+
+        for rect in self.poles:
+            self.screen.blit(self.pole.image, rect)
+
+        for rect in self.poletops:
+            self.screen.blit(self.poletop.image, rect)
+
+        for rect in self.flags:
+            self.screen.blit(self.flag.image, rect)
 
         for rect in self.coins:
             self.screen.blit(self.coin.image, rect)
@@ -112,6 +144,14 @@ class Background:
                 col = row[ncol]
                 if col == 'F':
                     self.floor.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'T':
+                    self.tiles.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == '|':
+                    self.poles.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'O':
+                    self.poletops.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'f':
+                    self.flags.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'C':
                     self.coins.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'B':
