@@ -8,13 +8,12 @@ class Goomba(Sprite):
         super(Goomba, self).__init__()
         self.screen = screen
         self.screen_rect = self.screen.get_rect()
-        self.image = pygame.image.load('image/minion/goomba-1.png')
+        self.image = pygame.image.load('images/minion/goomba-1.png')
         self.rect = self.image.get_rect()
 
-        frames = [pygame.image.load('image/minion/goomba-1.png'),
-                  pygame.image.load('image/minion/goomba-2.png')]
+        frames = [pygame.image.load('images/minion/goomba-1.png'),
+                  pygame.image.load('images/minion/goomba-2.png')]
         self.goomba_moving_timer = Timer(frames)
-
 
     def blitme(self):
         self.screen.blit(self.image, self.rect)
