@@ -177,9 +177,9 @@ class Mario(Sprite):
                 if ball.timetolive <= 0:
                     ball.kill()
         else:
-            self.vector.y = -2.5
             self.rect.centery += self.vector.y
             self.vector.y += Vector.forces().y
+            print(self.vector.y)
             self.airborne = True
 
     def blitme(self):
@@ -273,4 +273,5 @@ class Mario(Sprite):
 
     def die(self):
         self.is_dead = True
+        self.vector.y = -2.5
         pygame.mixer.Channel(0).play(pygame.mixer.Sound('music/death.wav'))
