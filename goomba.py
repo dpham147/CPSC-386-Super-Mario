@@ -7,7 +7,7 @@ class Goomba:
         self.screen_rect = self.screen.get_rect()
         self.mario = mario
         self.mario_rect = self.mario.get_rect()
-        self.image = pygame.image.load('image')
+        self.image = pygame.image.load('image/minion/goomba-1.png')
         self.rect = self.image.get_rect()
 
     def blitme(self):
