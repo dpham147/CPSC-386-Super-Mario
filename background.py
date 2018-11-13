@@ -23,6 +23,5 @@ class Background:
         if self.mario.mv_left and self.mario_rect.centerx < self.rect.centerx:
             self.rect.left += self.mario.vector.x
 
-
     def blitme(self):
         self.screen.blit(self.image, self.rect)
