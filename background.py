@@ -25,6 +25,7 @@ class Background:
         self.question = []
         self.pipes = []
         self.goombas = []
+        self.koopas = []
 
         sz = Background.BRICK_SIZE
 
@@ -39,6 +40,7 @@ class Background:
         self.question_brick = ImageRect(screen, 'question_block/question_block_initial-1', sz, sz)
         self.pipe = ImageRect(screen, 'pipe-1', sz, sz)
         self.goomba = ImageRect(screen, 'minions/goomba-1', sz, sz)
+        self.koopa = ImageRect(screen, 'minions/koopa-1', sz, sz)
 
         self.deltax = self.deltay = sz
 
@@ -83,6 +85,9 @@ class Background:
         for rect in self.goombas:
             rect.left -= self.mario.vector.x
 
+        for rect in self.koopas:
+            rect.left -= self.mario.vector.x
+
     def update(self):
         print(self.mario.rect.centerx)
         if self.mario.mv_right and self.mario_rect.centerx > self.screen_rect.centerx:
@@ -124,6 +129,9 @@ class Background:
         for rect in self.goombas:
             self.screen.blit(self.goomba.image, rect)
 
+        for rect in self.koopas:
+            self.screen.blit(self.koopa.image, rect)
+
     def reload(self):
         self.image = pygame.image.load('images/background.png')
         self.rect = self.image.get_rect()
@@ -164,3 +172,5 @@ class Background:
                     self.pipes.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'G':
                     self.goombas.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'K':
+                    self.koopas.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
