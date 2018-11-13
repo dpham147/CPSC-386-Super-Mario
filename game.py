@@ -12,6 +12,11 @@ class Game:
         self.screen = pygame.display.set_mode((700, 400))
         pygame.display.set_caption("Super Mario")
 
+        # Init audio
+        pygame.mixer.init()
+        pygame.mixer.set_num_channels(8)
+        #pygame.mixer.Channel(0).play(pygame.mixer.Sound('music/main_theme.ogg'), -1)
+
         # Create Mario
         self.mario = Mario(self.screen)
 
@@ -21,7 +26,7 @@ class Game:
     def play(self):
         eloop = EventLoop(finished=False)
         while not eloop.finished:
-            eloop.check_events(self.mario)
+            eloop.check_events(self.mario, self.background)
             self.update_screen()
 
     def update_screen(self):
