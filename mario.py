@@ -74,8 +74,8 @@ class Mario(Sprite):
             # Handle X Movement
             if self.mv_left and not self.is_crouch:
                 # Manip position
-                self.vector.x = max(self.vector.x - Vector.forces().x, -1)
-                background.rect.left -= min(0, abs(self.vector.x))
+                # self.vector.x = max(self.vector.x - Vector.forces().x, -1)
+                background.rect.left -= min(0, self.vector.x)
                 self.face_right = False
 
                 # Select Image if grounded
@@ -93,7 +93,7 @@ class Mario(Sprite):
             elif self.mv_right and not self.is_crouch:
                 # Manip position
                 self.vector.x = min(self.vector.x + Vector.forces().x, 1)
-                background.rect.right -= min(background.rect.right, abs(self.vector.x))
+                # background.rect.right -= min(background.rect.right, abs(self.vector.x))
                 self.face_right = True
 
                 # Select Image if grounded
@@ -151,6 +151,12 @@ class Mario(Sprite):
             if self.airborne:
                 self.rect.centery += self.vector.y
                 self.vector.y += Vector.forces().y
+            elif self.rect.collidelist(background.floor):
+                self.rect.centery += 0
+                self.vector.y += 0
+            else:
+                self.rect.centery -= self.vector.y
+                self.vector.y -= Vector.forces().y
 
             # Handle falling
             # if falling = True:
