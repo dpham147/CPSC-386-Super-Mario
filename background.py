@@ -23,13 +23,16 @@ class Background:
         self.breakables = []
         self.unbreakables = []
         self.question = []
-        self.pipes = []
+        self.pipes_head_left = []
+        self.pipes_head_right = []
+        self.pipes_body_left = []
+        self.pipes_body_right = []
         self.goombas = []
         self.koopas = []
 
         sz = Background.BRICK_SIZE
 
-        self.brick = ImageRect(screen, 'floor-150x150', sz, sz)
+        self.brick = ImageRect(screen, 'floor', sz, sz)
         self.tile = ImageRect(screen, 'tile_block', sz, sz)
         self.pole = ImageRect(screen, 'game_finished/flagpole', sz, sz)
         self.poletop = ImageRect(screen, 'game_finished/flagpole_top', sz, sz)
@@ -38,7 +41,10 @@ class Background:
         self.breakable = ImageRect(screen, 'bricks/brick_initial', sz, sz)
         self.unbreakable = ImageRect(screen, 'bricks/brick_initial', sz, sz)
         self.question_brick = ImageRect(screen, 'question_block/question_block_initial-1', sz, sz)
-        self.pipe = ImageRect(screen, 'pipe-1', sz, sz)
+        self.pipe_head_left = ImageRect(screen, 'pipe_head_left_half', sz, sz)
+        self.pipe_head_right = ImageRect(screen, 'pipe_head_right_half', sz, sz)
+        self.pipe_body_left = ImageRect(screen, 'pipe_body_left_half', sz, sz)
+        self.pipe_body_right = ImageRect(screen, 'pipe_body_right_half', sz, sz)
         self.goomba = ImageRect(screen, 'minions/goomba-1', sz, sz)
         self.koopa = ImageRect(screen, 'minions/koopa-1', sz, sz)
 
@@ -79,7 +85,16 @@ class Background:
         for rect in self.question:
             rect.left -= self.mario.vector.x
 
-        for rect in self.pipes:
+        for rect in self.pipes_head_left:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.pipes_head_right:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.pipes_body_left:
+            rect.left -= self.mario.vector.x
+
+        for rect in self.pipes_body_right:
             rect.left -= self.mario.vector.x
 
         for rect in self.goombas:
@@ -123,8 +138,17 @@ class Background:
         for rect in self.question:
             self.screen.blit(self.question_brick.image, rect)
 
-        for rect in self.pipes:
-            self.screen.blit(self.pipe.image, rect)
+        for rect in self.pipes_head_left:
+            self.screen.blit(self.pipe_head_left.image, rect)
+
+        for rect in self.pipes_head_right:
+            self.screen.blit(self.pipe_head_right.image, rect)
+
+        for rect in self.pipes_body_left:
+            self.screen.blit(self.pipe_body_left.image, rect)
+
+        for rect in self.pipes_body_right:
+            self.screen.blit(self.pipe_body_right.image, rect)
 
         for rect in self.goombas:
             self.screen.blit(self.goomba.image, rect)
@@ -169,7 +193,13 @@ class Background:
                 elif col == '?':
                     self.question.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'P':
-                    self.pipes.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.pipes_head_left.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'p':
+                    self.pipes_body_left.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'Q':
+                    self.pipes_head_right.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                elif col == 'q':
+                    self.pipes_body_right.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'G':
                     self.goombas.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
                 elif col == 'K':

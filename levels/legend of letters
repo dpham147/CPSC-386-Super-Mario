@@ -1,0 +1,14 @@
+F = floor
+P = pipe head left half
+Q = pipe head right half
+p = pipe body left half
+q = pipe body right half
+? = question mark block
+B = brick
+G = goomba
+K = koopa
+T = tile block
+| = flagpole
+english letter O = flagpole top
+f = finish flag(green)
+H = ???green(life) mushroom???
