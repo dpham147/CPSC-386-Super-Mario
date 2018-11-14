@@ -175,32 +175,32 @@ class Background:
             for ncol in range(len(row)):
                 col = row[ncol]
                 if col == 'F':
-                    self.floor.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.floor.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'T':
-                    self.tiles.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.tiles.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == '|':
-                    self.poles.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.poles.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'O':
-                    self.poletops.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.poletops.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'f':
-                    self.flags.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.flags.append(pygame.Rect((ncol * dx) + 8, (nrow * dy) + 8, w, h))
                 elif col == 'C':
-                    self.coins.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.coins.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'B':
-                    self.breakables.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.breakables.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'U':
-                    self.unbreakables.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.unbreakables.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == '?':
-                    self.question.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.question.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'P':
-                    self.pipes_head_left.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.pipes_head_left.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'p':
-                    self.pipes_body_left.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.pipes_body_left.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'Q':
-                    self.pipes_head_right.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.pipes_head_right.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'q':
-                    self.pipes_body_right.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.pipes_body_right.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'G':
-                    self.goombas.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.goombas.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
                 elif col == 'K':
-                    self.koopas.append(pygame.Rect(ncol * dx, nrow * dy, w, h))
+                    self.koopas.append(pygame.Rect(ncol * dx, (nrow * dy) + 8, w, h))
