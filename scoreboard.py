@@ -40,7 +40,7 @@ class Scoreboard:
 
     def prep_world(self):
         world = self.stats.level
-        world_str = "Score:"
+        world_str = "Level:"
         self.world_image = self.font.render(world_str, True, self.text_color)
         self.world_val_image = self.font.render(world, True, self.text_color)
 
